@@ -1,5 +1,46 @@
 library(ggplot2)
 library(reshape2)
+library(tidyverse)
+library(readxl)
+
+## Import the Excel File
+local_path <- ("/Datasets/NC_NS_NC/Chronamperometry_NegC_NC_NS.xlsx")
+wd <- getwd()
+directory <- paste(wd, local_path, sep = "")
+dataframe_raw <- read_excel(directory)
+
+## Munge the Excel File
+dataframe = dataframe_raw[-c(1),]
+x_name <- "Time"
+y_name <- "Current"
+names(dataframe) <- c(x_name,y_name,x_name,y_name,x_name,y_name)
+ch1 = dataframe[,c(1,2)]
+ch2 = dataframe[,c(3,4)]
+ch3 = dataframe[,c(5,6)]
+
+## Remove The Stabilization Region of Chronamperometric Graph
+reduced_dataframe = dataframe[-c(0:1000),]
+ch1r = reduced_dataframe[,c(1,2)]
+ch2r = reduced_dataframe[,c(3,4)]
+ch3r = reduced_dataframe[,c(5,6)]
+
+## Plot the Data
+ggplot() + 
+  geom_line(data=ch1r, aes(x=Time, y=Current, group = 1, color = "red"))  + 
+  geom_line(data=ch2r, aes(x=Time, y=Current, group = 1, color = "blue"))  + 
+  geom_line(data=ch3r, aes(x=Time, y=Current, group = 1, color = "chartreuce4"))  + 
+  geom_smooth(data=ch1r, aes(x=Time, y=Current, group = 1, level = 0.9995))  + 
+  geom_smooth(data=ch2r, aes(x=Time, y=Current, group = 1, level = 0.9995))  + 
+  geom_smooth(data=ch3r, aes(x=Time, y=Current, group = 1, level = 0.9995))  + 
+  ggtitle("Chronoamperometry Data - Biological Replicates") + xlab("Time (Seconds)") + ylab("Current (microAmperes)") +
+  theme(axis.text=element_text(size=12), axis.title=element_text(size=14,face="bold")) +
+  labs(color = "Channels\n") +
+  scale_color_manual(labels = c("Channel 1", "Channel 2", "Channel 3"), values = c("indianred2", "mediumpurple2", "olivedrab3")) 
+
+
+
+
+############################## OLD STUFF ##############################
 
 chronoglycerol1 <-read.table("/Users/Clayton/Documents/Rhodopseudomonas\ Analysis\ PaoloBPV/Negative\ Control\ No\ Substrate\ No\ Cells/Ch1.txt")
 chronoglycerol2 <-read.table("/Users/Clayton/Documents/Rhodopseudomonas\ Analysis\ PaoloBPV/Negative\ Control\ No\ Substrate\ No\ Cells/Ch2.txt")
