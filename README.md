@@ -14,4 +14,5 @@ To do:
 ## Usage 
 
 Step 1: Adjust the path (as long as it's in your working directory) to wherever you saved the data in the "New Code (Autosaved).R" file. 
+
 Step 2: Rip it (just not the old stuff -- will depreciate that later into a different file)
