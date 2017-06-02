@@ -13,6 +13,18 @@ To do:
 
 ## Usage 
 
-Step 1: Adjust the path (as long as it's in your working directory) to wherever you saved the data in the "New Code (Autosaved).R" file. 
+I have an included an example of how to use this repository in the Chronoamperometry_Substrate_Analysis.R file
 
-Step 2: Rip it (just not the old stuff -- will depreciate that later into a different file)
+The gist of the process is that excel file parsing, data munging, statistical analysis, and plotting have been broken into functions across multiple files so that additional functionality can be added for linear sweeps, cyclic voltammetry, etc without too much hastle. These functions are all called from the Chronoamperometry_Substrate_Analysis.R as needed. 
+
+To use the code: 
+
+Step 1: Adjust the path in the Chronoamperometry_Substrate_Analysis.R file.  
+Step 2: Run the whole file
+
+## Dependencies
+
+1. ggplot2
+2. readxl
+3. reshape2
+4. tidyverse
