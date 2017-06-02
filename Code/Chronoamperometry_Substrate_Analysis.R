@@ -1,6 +1,7 @@
 wd <- getwd()
 code <- ("/code/")
 directory <- paste(wd, code, sep = "")
+
 excel_converter <- paste(directory, "excel_converter.R", sep = "")
 data_munging <- paste(directory, "data_munging.R", sep = "")
 statistical_analysis <- paste(directory, "statistical_analysis.R", sep = "")
