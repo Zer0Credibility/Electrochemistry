@@ -1,5 +1,81 @@
 library(ggplot2)
+library(readxl)
 library(reshape2)
+
+setwd("~/Documents/Electrochemistry/")
+
+
+#Put the name of your file here including the extension
+nc_file_name_extension <- ("NC_NC_NS.xlsx")
+pc_file_name_extension <- ("Chron_V2_D2.xlsx")
+
+#Put the file location(from working directory)
+nc_file_location <- ("/Datasets/NC_NS_NC/")
+pc_file_location <- ("/Datasets/PC_50umol/")
+
+# The file needs to be in the working directory within a folder called "Datasets"
+wd <- getwd()
+path <- paste(wd, nc_file_location, sep = "")
+directory <- paste(path, nc_file_name_extension, sep = "")
+dataframe_raw <- read_excel(directory)
+dataframe = dataframe_raw[-c(1),]
+maxrow = nrow(dataframe)
+dataframe = dataframe[-c(maxrow),]
+reduced_dataframe = dataframe[-c(0:5000),]
+#nc_reduced_dataframe = reduced_dataframe[-c(20000:60000),]
+
+wd <- getwd()
+path <- paste(wd, pc_file_location, sep = "")
+directory <- paste(path, pc_file_name_extension, sep = "")
+dataframe_raw <- read_excel(directory)
+dataframe = dataframe_raw[-c(1),]
+maxrow = nrow(dataframe)
+dataframe = dataframe[-c(maxrow),]
+reduced_dataframe = dataframe[-c(0:5000),]
+pc_reduced_dataframe = reduced_dataframe[-c(20000:60000),]
+
+x_name <- "Time"
+y_name <- "Current"
+names(pc_reduced_dataframe) <- c(x_name,y_name,x_name,y_name,x_name,y_name)
+ch1 = pc_reduced_dataframe[,c(1,2)]
+ch2 = pc_reduced_dataframe[,c(3,4)]
+ch3 = pc_reduced_dataframe[,c(5,6)]
+
+names(nc_reduced_dataframe) <- c(x_name,y_name,x_name,y_name,x_name,y_name)
+ch4 = nc_reduced_dataframe[,c(1,2)]
+ch5 = nc_reduced_dataframe[,c(3,4)]
+ch6 = nc_reduced_dataframe[,c(5,6)]
+
+
+ggplot() + 
+  geom_line(data=ch1df, aes(x=Time, y=Current, group = 1, color = "red"))  + 
+  geom_line(data=ch2df, aes(x=Time, y=Current, group = 1, color = "blue"))  + 
+  geom_line(data=ch3df, aes(x=Time, y=Current, group = 1, color = "chartreuce4"))  + 
+  geom_line(data=ch4, aes(x=Time, y=Current, group = 1, color = "red"))  + 
+  geom_line(data=ch5, aes(x=Time, y=Current, group = 1, color = "blue"))  + 
+  geom_line(data=ch6, aes(x=Time, y=Current, group = 1, color = "chartreuce4"))  + 
+  
+  geom_smooth(data=ch1df, aes(x=Time, y=Current, group = 1, level = 0.9995))  + 
+  geom_smooth(data=ch2df, aes(x=Time, y=Current, group = 1, level = 0.9995))  + 
+  geom_smooth(data=ch3df, aes(x=Time, y=Current, group = 1, level = 0.9995))  + 
+  geom_smooth(data=ch4, aes(x=Time, y=Current, group = 1, level = 0.9995))  + 
+  geom_smooth(data=ch5, aes(x=Time, y=Current, group = 1, level = 0.9995))  + 
+  geom_smooth(data=ch6, aes(x=Time, y=Current, group = 1, level = 0.9995))  + 
+  
+  
+  ggtitle("Chronoamperometry Data - Biological Replicates") + xlab("Time (Seconds)") + ylab("Current (microAmperes)") +
+  theme(axis.text=element_text(size=12), axis.title=element_text(size=14,face="bold")) +
+  labs(color = "Channels\n") +
+  
+  scale_color_manual(labels = c("Channel 1", "Channel 2", "Channel 3", "Channel 4", "Channel 5", "Channel 6"), values = c("indianred2", "mediumpurple2", "olivedrab3","indianred2", "mediumpurple2", "olivedrab3")) +
+  scale_x_discrete(breaks = seq(0, 10000, by = 1000)) +
+  scale_y_discrete(breaks = seq(-3, 4, by = 0.1))
+
+
+
+
+
+#######################################################################################################
 
 chronoglycerol1 <-read.table("~/Documents/Rhodopseudomonas Analysis PaoloBPV/Tripple Replicate Fail/2017-05-12 Claytonch1.txt")
 chronoglycerol2 <-read.table("~/Documents/Rhodopseudomonas Analysis PaoloBPV/Tripple Replicate Fail/2017-05-12 Claytonch2.txt")
