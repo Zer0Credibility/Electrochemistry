@@ -22,7 +22,7 @@ dataframe = dataframe_raw[-c(1),]
 maxrow = nrow(dataframe)
 dataframe = dataframe[-c(maxrow),]
 reduced_dataframe = dataframe[-c(0:5000),]
-#nc_reduced_dataframe = reduced_dataframe[-c(20000:60000),]
+nc_reduced_dataframe = reduced_dataframe #[-c(20000:60000),]
 
 wd <- getwd()
 path <- paste(wd, pc_file_location, sep = "")
@@ -68,7 +68,7 @@ ggplot() +
   labs(color = "Channels\n") +
   
   scale_color_manual(labels = c("Channel 1", "Channel 2", "Channel 3", "Channel 4", "Channel 5", "Channel 6"), values = c("indianred2", "mediumpurple2", "olivedrab3","indianred2", "mediumpurple2", "olivedrab3")) +
-  scale_x_discrete(breaks = seq(0, 10000, by = 1000)) +
+  scale_x_discrete(breaks = seq(0, 50000, by = 10000)) +
   scale_y_discrete(breaks = seq(-3, 4, by = 0.1))
 
 
@@ -117,9 +117,9 @@ names(ch1df) <- c(x_name,y_name)
 
 # channel 2 data setup
 x = ch2[,1]
-ch2x2 <- x[-c(0:5000)]
+ch2x2 <- x[-c(0:1, 300:70000 )]
 y = ch2[,2]
-ch2y2 <- y[-c(0:5000 )]
+ch2y2 <- y[-c(0:1, 300:70000 )]
 ch2x = ch2x2
 ch2y = ch2y2
 x_name <- "Time"
@@ -127,6 +127,8 @@ y_name <- "Current"
 ch2df <- data.frame(ch2x,ch2y)
 names(ch2df) <- c(x_name,y_name)
 
+plot(ch2df, type="n", main = "Chronoamperometric Stabilization")
+lines(ch2df)
 
 # channel 3 data setup
 

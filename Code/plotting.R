@@ -31,9 +31,9 @@ plot.dataframe_reduced <- function(dataframe) {
       geom_line(data=ch1, aes(x=Time, y=Current, group = 1, color = "red"))  + 
       geom_line(data=ch2, aes(x=Time, y=Current, group = 1, color = "blue"))  + 
       geom_line(data=ch3, aes(x=Time, y=Current, group = 1, color = "chartreuce4"))  + 
-      geom_smooth(data=ch1, aes(x=Time, y=Current, group = 1, level = 0.9995))  + 
-      geom_smooth(data=ch2, aes(x=Time, y=Current, group = 1, level = 0.9995))  + 
-      geom_smooth(data=ch3, aes(x=Time, y=Current, group = 1, level = 0.9995))  + 
+      #geom_smooth(data=ch1, aes(x=Time, y=Current, group = 1, level = 0.9995))  + 
+      #geom_smooth(data=ch2, aes(x=Time, y=Current, group = 1, level = 0.9995))  + 
+      #geom_smooth(data=ch3, aes(x=Time, y=Current, group = 1, level = 0.9995))  + 
       ggtitle("Chronoamperometry Data - Biological Replicates") + xlab("Time (Seconds)") + ylab("Current (microAmperes)") +
       theme(axis.text=element_text(size=12), axis.title=element_text(size=14,face="bold")) +
       labs(color = "Channels\n") +
