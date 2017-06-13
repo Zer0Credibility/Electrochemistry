@@ -104,9 +104,9 @@ geom_smooth(span=0.3)
 # Channel 1 setup 2
 
 x = ch1[,1]
-ch1x2 <- x[-c(0:5000)]
+ch1x2 <- x[-c(0:1, 5000:70000 )]
 y = ch1[,2]
-ch1y2 <- y[-c(0:5000 )]
+ch1y2 <- y[-c(0:1, 5000:70000 )]
 ch1x = ch1x2
 ch1y = ch1y2
 x_name <- "Time"
@@ -116,10 +116,10 @@ names(ch1df) <- c(x_name,y_name)
 
 
 # channel 2 data setup
-x = ch2[,1]
-ch2x2 <- x[-c(0:1, 300:70000 )]
-y = ch2[,2]
-ch2y2 <- y[-c(0:1, 300:70000 )]
+x = ch3[,1]
+ch2x2 <- x[-c(0:15000)]
+y = ch3[,2]
+ch2y2 <- y[-c(0:15000)]
 ch2x = ch2x2
 ch2y = ch2y2
 x_name <- "Time"
@@ -127,15 +127,47 @@ y_name <- "Current"
 ch2df <- data.frame(ch2x,ch2y)
 names(ch2df) <- c(x_name,y_name)
 
-plot(ch2df, type="n", main = "Chronoamperometric Stabilization")
+ch2dfx <- ch2df[,c(1)]
+ch2dfy <- ch2df[,c(2)]
+
+y = ch2df[,c(2)]
+
+ggplot() + 
+  geom_line(data=ch1df, aes(x=Time, y=Current, group = 1))  + 
+  geom_line(data=ch2df, aes(x=Time, y=Current, group = 1))  + 
+  geom_line(data=ch3df, aes(x=Time, y=Current, group = 1))  + 
+  geom_smooth(data=ch1df, aes(x=Time, y=Current, group = 1, level = 0.9995))  + 
+  geom_smooth(data=ch2df, aes(x=Time, y=Current, group = 1, level = 0.9995))  + 
+  geom_smooth(data=ch3df, aes(x=Time, y=Current, group = 1, level = 0.9995))  + 
+  ggtitle("Chronoamperometric Stabilization") + xlab("Time (Seconds)") + ylab("Current (microAmperes)") +
+  theme(axis.text=element_text(size=12), axis.title=element_text(size=14,face="bold")) +
+  labs(color = "Channels\n") +
+  scale_x_log10() +
+  scale_y_log10()
+
+plot(ch2df, type="n", main = "Chronoamperometric Stabilization", xlab = "Time (Seconds)", ylab = "Current (microAmperes)")
 lines(ch2df)
+
+auc()
+
+integral <- auc(ch2dfx, ch2dfy, thresh = 0.15, dens = 100)
+
+#from this graph set approximate starting values
+a_start<-35 #param a is the y value when x=0
+b_start<-2*log(2)/a_start #b is the decay rate
+#model
+m<-nls(y~a*exp(-b*x),start=list(a=a_start,b=b_start))
+#get some estimation of goodness of fit
+cor(y,predict(m))
+#plot the fit
+lines(x,predict(m),col="red",lty=2,lwd=3)
 
 # channel 3 data setup
 
 x = ch3[,1]
-ch3x3 <- x[-c(0:5000)]
+ch3x3 <- x[-c(0:1, 5000:70000 )]
 y = ch3[,2]
-ch3y3 <- y[-c(0:5000 )]
+ch3y3 <- y[-c(0:1, 5000:70000 )]
 ch3x = ch3x3
 ch3y = ch3y3
 x_name <- "Time"
